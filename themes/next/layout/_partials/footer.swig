@@ -61,4 +61,6 @@
   <div class="footer-custom">{#
   #}{{ theme.footer.custom_text }}{#
 #}</div>
+
+
 {% endif %}
