@@ -5,10 +5,10 @@
 # Site
 title: article
 subtitle:
-description: 文章博客
+description: 前端
 keywords:
 author: 天空影
-language:
+language: zh-CN
 timezone:
 
 # URL
@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
