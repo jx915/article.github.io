@@ -483,9 +483,9 @@ pangu: false
 # Disqus
 disqus:
   enable: false
-  shortname:
+  shortname: 天空影
   count: true
-  lazyload: false
+  lazyload: true
 
 # Hypercomments
 #hypercomments_id:
@@ -518,7 +518,7 @@ valine:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-#livere_uid: your uid
+livere_uid: MTAyMC8zNjg3OS8xMzQxNQ==
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
