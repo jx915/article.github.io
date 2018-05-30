@@ -350,7 +350,7 @@
                 
               
 
-              <time title="创建时间：2018-05-30 09:32:54 / 修改时间：11:11:33" itemprop="dateCreated datePublished" datetime="2018-05-30T09:32:54+08:00">2018-05-30</time>
+              <time title="创建时间：2018-05-30 09:32:54 / 修改时间：11:16:29" itemprop="dateCreated datePublished" datetime="2018-05-30T09:32:54+08:00">2018-05-30</time>
             
 
             
@@ -419,61 +419,18 @@
 
       
         
-          
-            <h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
+          <h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
 <li><a href="http://nodejs.cn/download/" target="_blank" rel="noopener">安装node.js</a></li>
 <li><a href="https://git-scm.com/" target="_blank" rel="noopener">安装Git</a></li>
 <li><a href="https://github.com/" target="_blank" rel="noopener">github账号</a></li>
 </ul>
-<h4 id="撸起袖子开干"><a href="#撸起袖子开干" class="headerlink" title="撸起袖子开干"></a>撸起袖子开干</h4><h5 id="一：创建github仓库"><a href="#一：创建github仓库" class="headerlink" title="一：创建github仓库"></a>一：创建github仓库</h5><p><strong>特别强调：</strong> 两个红箭头指向的名称要一致，比如我就是jx915，后面xxxx也要填jx915</p>
-<p><img src="/2018/05/30/github结合hexo搭建博客站点/a.png" alt="建仓"></p>
-<h5 id="二：部署ssh"><a href="#二：部署ssh" class="headerlink" title="二：部署ssh"></a>二：部署ssh</h5><p>参考文章：<a href="https://blog.csdn.net/jx950915/article/details/80444969" target="_blank" rel="noopener">github配置ssh</a></p>
-<h5 id="三：创建本地文件夹（用来存放hexo源文件）"><a href="#三：创建本地文件夹（用来存放hexo源文件）" class="headerlink" title="三：创建本地文件夹（用来存放hexo源文件）"></a>三：创建本地文件夹（用来存放hexo源文件）</h5><p><strong>1、全局安装<code>hexo</code>,桌面鼠标右键 <code>git base here</code></strong></p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo --global</span><br></pre></td></tr></table></figure>
-<p>  <strong>2、初始化<code>hexo</code>,在新建文件夹右键 <code>git base here</code></strong></p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p> 执行成功后文件目录结构<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p><code>_config.yml</code>:站点配置文件</p>
-</li>
-<li><p><code>scaffolds</code>:模板文件 ，规定了我们创建一篇文章的时候最开始的样子</p>
-</li>
-<li><p><code>source</code>: 存放md文件</p>
-</li>
-<li><p><code>themes</code> : 存放主题文件</p>
-</li>
-</ul>
-<p><strong>3、部署到git</strong></p>
-<p><strong>配置</strong>：修改我们的的站点配置文件<code>_config.yml</code>中如下字段</p>
-<p><img src="/2018/05/30/github结合hexo搭建博客站点/b.png" alt="部署git配置"></p>
-<ul>
-<li><p><code>type</code>: git</p>
-</li>
-<li><p><code>repo</code> : 仓库地址(ssh地址)</p>
-</li>
-<li><p><code>branch</code> : master</p>
-</li>
-</ul>
-<p><strong>终端执行命令</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s </span><br><span class="line"></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p><code>hexo clean</code> : 清除缓存</p>
-</li>
-<li><p><code>hexo g</code> :进行渲染</p>
-</li>
-<li><p><code>hexo s</code> :本地调试 浏览器输入<code>http://localhost:4000</code>可以看到效果</p>
-</li>
-<li><p><code>hexo d</code> :部署到git 执行成功后浏览器输入<code>http://你github名字.github.io</code> 可以看到效果</p>
-</li>
-</ul>
-<p>所以这里是有四步，不过熟练之后可以直接<code>hexo d</code>也就是不进行本地预览</p>
-<p><strong>预览效果</strong></p>
-<p><img src="/2018/05/30/github结合hexo搭建博客站点/c.png" alt="预览效果"></p>
-<p><strong>4、新建文章</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post “文章名字”</span><br></pre></td></tr></table></figure>
-<p>建立好的文章在 <code>source/_posts</code> 中，你可以用<code>markdown</code>语法编辑内容就可以。编辑完成后执行第3步中终端的操作就可以啦，刷新下浏览器就可看到你的新文章啦。如下图</p>
-<p><img src="/2018/05/30/github结合hexo搭建博客站点/d.png" alt="新建文章"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/30/github结合hexo搭建博客站点/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
