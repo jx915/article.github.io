@@ -1,5 +1,5 @@
 ---
-title: categories
+title: 分类
 date: 2018-05-25 14:49:31
 type: categories
 comments: false
