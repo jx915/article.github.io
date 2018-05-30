@@ -1,5 +1,5 @@
 ---
-title: github结合hexo搭建博客站点
+title: hexo搭建博客
 date: 2018-05-30 09:32:54
 categories: "hexo教程"
 tags:
@@ -7,13 +7,17 @@ tags:
 	- hexo
 ---
 
+> 这两天通过一些文章以及官方文档终于搭建起了属于自己的博客站点，后续会不断的分享折腾hexo主题的经验。
+
+<!-- more -->
+
 ## 准备工作
 
 - [安装node.js](http://nodejs.cn/download/)
 - [安装Git](https://git-scm.com/)
 - [github账号](https://github.com/)
 
-<!-- more -->
+
 
 ## 撸起袖子开干
 
