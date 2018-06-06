@@ -108,23 +108,28 @@
 
 
 
-  <meta name="description" content="生活继续">
-<meta property="og:type" content="website">
-<meta property="og:title" content="愿我百年孤独孤独到老">
-<meta property="og:url" content="http://jx915.com/index.html">
+  <meta name="description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
+<meta name="keywords" content="ajax,hash,路由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端路由实现-hash">
+<meta property="og:url" content="http://jx915.com/2018/06/06/前端路由实现-hash/index.html">
 <meta property="og:site_name" content="愿我百年孤独孤独到老">
-<meta property="og:description" content="生活继续">
+<meta property="og:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.png">
+<meta property="og:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.gif">
+<meta property="og:updated_time" content="2018-06-06T08:11:04.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="愿我百年孤独孤独到老">
-<meta name="twitter:description" content="生活继续">
+<meta name="twitter:title" content="前端路由实现-hash">
+<meta name="twitter:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
+<meta name="twitter:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://jx915.com/"/>
+  <link rel="canonical" href="http://jx915.com/2018/06/06/前端路由实现-hash/"/>
 
 
 
@@ -134,7 +139,7 @@
   };
 </script>
 
-  <title>愿我百年孤独孤独到老</title>
+  <title>前端路由实现-hash | 愿我百年孤独孤独到老</title>
   
 
 
@@ -181,8 +186,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -219,7 +223,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
     <a href="/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
   </li>
@@ -287,197 +291,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jx915.com/2018/05/23/欢迎/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="天空影">
-      <meta itemprop="description" content="生活继续">
-      <meta itemprop="image" content="/images/user.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="愿我百年孤独孤独到老">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/23/欢迎/" itemprop="url">
-                  Hello
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-23 14:02:09" itemprop="dateCreated datePublished" datetime="2018-05-23T14:02:09+08:00">2018-05-23</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-05-30 15:05:52" itemprop="dateModified" datetime="2018-05-30T15:05:52+08:00">2018-05-30</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/05/23/欢迎/" class="leancloud_visitors" data-flag-title="Hello">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-			
-		
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>愿我百年孤独孤独到老</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/23/欢迎/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -509,11 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/06/前端路由实现-hash/" itemprop="url">
-                  前端路由实现-hash
-                </a>
+          <h1 class="post-title" itemprop="name headline">前端路由实现-hash
               
             
           </h1>
@@ -593,6 +405,16 @@
           
 			
 		
+			<div class="post-tags">
+			  
+				<a href="/tags/ajax/" <i class="fa fa-tag"></i> ajax</a>
+			  
+				<a href="/tags/hash/" <i class="fa fa-tag"></i> hash</a>
+			  
+				<a href="/tags/路由/" <i class="fa fa-tag"></i> 路由</a>
+			  
+			</div>
+      
         </div>
       </header>
     
@@ -606,9 +428,7 @@
       
 
       
-        
-          
-            <blockquote>
+        <blockquote>
 <p>window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。</p>
 </blockquote>
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p><code>angular 1.x</code>的路由是直接引入<code>html</code>文件的，所以从这一点逐步分析。</p>
@@ -627,8 +447,6 @@
 <h4 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h4><p><img src="/2018/06/06/前端路由实现-hash/1.gif" alt="效果"></p>
 <p>这次只是做了一下<code>hash</code>的，最新的<code>history API</code>还不是很懂，等明白了再做一个<code>history</code>版的，这样就不用看到不怎么友好的<code>#</code>了！</p>
 
-          
-        
       
     </div>
 
@@ -648,188 +466,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jx915.com/2018/05/30/github结合hexo搭建博客站点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="天空影">
-      <meta itemprop="description" content="生活继续">
-      <meta itemprop="image" content="/images/user.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="愿我百年孤独孤独到老">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/30/github结合hexo搭建博客站点/" itemprop="url">
-                  hexo搭建博客
-                </a>
-              
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
+              <a href="/2018/05/30/github结合hexo搭建博客站点/" rel="next" title="hexo搭建博客">
+                <i class="fa fa-chevron-left"></i> hexo搭建博客
+              </a>
             
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-30 09:32:54 / 修改时间：14:50:36" itemprop="dateCreated datePublished" datetime="2018-05-30T09:32:54+08:00">2018-05-30</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/hexo教程/" itemprop="url" rel="index"><span itemprop="name">hexo教程</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/05/30/github结合hexo搭建博客站点/" class="leancloud_visitors" data-flag-title="hexo搭建博客">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-			
-		
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <blockquote>
-<p>这两天通过一些文章以及官方文档终于搭建起了属于自己的博客站点，后续会不断的分享折腾hexo主题的经验。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/30/github结合hexo搭建博客站点/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -839,14 +497,24 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjg3OS8xMzQxNQ=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -867,8 +535,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -969,6 +646,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-number">1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开工"><span class="nav-number">2.</span> <span class="nav-text">开工</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一：简单介绍load-方法"><span class="nav-number">2.1.</span> <span class="nav-text">一：简单介绍load()方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二：写入router方法"><span class="nav-number">2.2.</span> <span class="nav-text">二：写入router方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最终效果"><span class="nav-number">3.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1097,6 +790,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
 
   
 
@@ -1121,6 +818,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
