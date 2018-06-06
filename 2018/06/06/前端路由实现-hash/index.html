@@ -108,20 +108,20 @@
 
 
 
-  <meta name="description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
+  <meta name="description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。">
 <meta name="keywords" content="ajax,hash,路由">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端路由实现-hash">
 <meta property="og:url" content="http://jx915.com/2018/06/06/前端路由实现-hash/index.html">
 <meta property="og:site_name" content="愿我百年孤独孤独到老">
-<meta property="og:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
+<meta property="og:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.png">
 <meta property="og:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.gif">
-<meta property="og:updated_time" content="2018-06-06T08:11:04.598Z">
+<meta property="og:updated_time" content="2018-06-06T08:12:42.975Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端路由实现-hash">
-<meta name="twitter:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。  分析angular 1.x的路由是直接引入html文件的，所以从这一点逐步分析。 1、我们在angular 1.x的路由中会看到 #,这个 # 有两种意思，一种是锚点，也就是单页面跳转到具体的块div;第二种也">
+<meta name="twitter:description" content="window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。">
 <meta name="twitter:image" content="http://jx915.com/2018/06/06/前端路由实现-hash/1.png">
 
 
@@ -350,7 +350,7 @@
                 
               
 
-              <time title="创建时间：2018-06-06 15:41:52 / 修改时间：16:11:04" itemprop="dateCreated datePublished" datetime="2018-06-06T15:41:52+08:00">2018-06-06</time>
+              <time title="创建时间：2018-06-06 15:41:52 / 修改时间：16:12:42" itemprop="dateCreated datePublished" datetime="2018-06-06T15:41:52+08:00">2018-06-06</time>
             
 
             
@@ -431,6 +431,7 @@
         <blockquote>
 <p>window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。</p>
 </blockquote>
+<a id="more"></a>
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p><code>angular 1.x</code>的路由是直接引入<code>html</code>文件的，所以从这一点逐步分析。</p>
 <p>1、我们在<code>angular 1.x</code>的路由中会看到 <code>#</code>,这个 <code>#</code> 有两种意思，一种是锚点，也就是单页面跳转到具体的块<code>div</code>;第二种也就是我们要说的，路由中的<code>#</code>，路由里的 # 不叫锚点，我们称之为 hash，大型框架的路由系统大多都是哈希实现的。</p>
 <p>2、根据监听哈希变化触发的事件 —— <code>hashchange</code> 事件</p>
