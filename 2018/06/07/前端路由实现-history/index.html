@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="MDN:The History interface allows manipulation of the browser session history, that is the pages visited in the tab or frame that the current page is loaded in.">
+<meta name="keywords" content="ajax,路由,history-api">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端路由实现-history">
+<meta property="og:url" content="http://jx915.com/2018/06/07/前端路由实现-history/index.html">
+<meta property="og:site_name" content="愿我百年孤独孤独到老">
+<meta property="og:description" content="MDN:The History interface allows manipulation of the browser session history, that is the pages visited in the tab or frame that the current page is loaded in.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/1.gif">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/2.gif">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/3.gif">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/4.gif">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/5.gif">
+<meta property="og:image" content="http://jx915.com/2018/06/07/前端路由实现-history/6.gif">
+<meta property="og:updated_time" content="2018-06-07T09:26:10.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端路由实现-history">
+<meta name="twitter:description" content="MDN:The History interface allows manipulation of the browser session history, that is the pages visited in the tab or frame that the current page is loaded in.">
+<meta name="twitter:image" content="http://jx915.com/2018/06/07/前端路由实现-history/1.gif">
+
+
+
+
+
+
+  <link rel="canonical" href="http://jx915.com/2018/06/07/前端路由实现-history/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端路由实现-history | 愿我百年孤独孤独到老</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+	
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">愿我百年孤独孤独到老</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jx915.com/2018/06/07/前端路由实现-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="天空影">
+      <meta itemprop="description" content="生活继续">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="愿我百年孤独孤独到老">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端路由实现-history
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-07 15:28:25 / 修改时间：17:26:10" itemprop="dateCreated datePublished" datetime="2018-06-07T15:28:25+08:00">2018-06-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/姑且算轮子吧/" itemprop="url" rel="index"><span itemprop="name">姑且算轮子吧</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/07/前端路由实现-history/" class="leancloud_visitors" data-flag-title="前端路由实现-history">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+			
+		
+			<div class="post-tags">
+			  
+				<a href="/tags/ajax/" <i class="fa fa-tag"></i> ajax</a>
+			  
+				<a href="/tags/路由/" <i class="fa fa-tag"></i> 路由</a>
+			  
+				<a href="/tags/history-api/" <i class="fa fa-tag"></i> history-api</a>
+			  
+			</div>
+      
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>MDN:The History interface allows manipulation of the browser session history, that is the pages visited in the tab or frame that the current page is loaded in.</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="了解"><a href="#了解" class="headerlink" title="了解"></a>了解</h4><p><code>HTML5 history</code>新增了两个<code>API</code>:<code>history.pushState</code>和<code>history.replaceState</code></p>
+<p>两个<code>API</code>都接收三个参数：</p>
+<ul>
+<li><p>状态对象（<code>state object</code>）：一个JavaScript对象，与用<code>pushState()</code>方法创建的新历史记录条目关联。无论何时用户导航到新创建的状态，<code>popstate</code>事件都会被触发，并且事件对象的state属性都包含历史记录条目的状态对象的拷贝。</p>
+</li>
+<li><p>标题（<code>title</code>）：FireFox浏览器目前会忽略该参数，虽然以后可能会用上。考虑到未来可能会对该方法进行修改，传一个空字符串会比较安全。或者，你也可以传入一个简短的标题，标明将要进入的状态。</p>
+</li>
+<li><p>地址（<code>URL</code>）： 新的历史记录条目的地址。浏览器不会在调用<code>pushState()</code>方法后加载该地址，但之后，可能会试图加载，例如用户重启浏览器。新的URL不一定是绝对路径；如果是相对路径，它将以当前URL为基准；传入的URL与当前URL应该是同源的，否则，<code>pushState()</code>会抛出异常。该参数是可选的；不指定的话则为文档当前URL。</p>
+</li>
+</ul>
+<p><strong>相同之处</strong>是两个<code>API</code>都会操作浏览器的历史记录，而不会引起页面的刷新。</p>
+<p><strong>不同之处</strong>在于<code>pushState</code>会增加一条新的历史记录，而<code>replaceState</code>则会替换当前的历史记录。</p>
+<p>这里大家可以先<code>F12</code>试试，看看地址栏发生了什么变化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">window.history.pushState(null, null, &quot;hell&quot;);</span><br><span class="line"></span><br><span class="line">window.history.pushState(null, null, &quot;/hell&quot;);</span><br><span class="line"></span><br><span class="line">window.history.pushState(null, null, &quot;#/hello&quot;);</span><br><span class="line"></span><br><span class="line">window.history.pushState(null, null, &quot;?name=&quot;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：这里的url不支持跨域，否则会抛出异常</p>
+</blockquote>
+<h4 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h4><p><code>index.html</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;</span><br><span class="line">    &lt;title&gt;前端路由实现&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .warp&#123;</span><br><span class="line">            width:400px;</span><br><span class="line">            height:400px;</span><br><span class="line">            border:1px solid grey;</span><br><span class="line">            margin:0 auto;</span><br><span class="line">        &#125;</span><br><span class="line">        .nav&#123;</span><br><span class="line">            border-bottom:1px solid grey;</span><br><span class="line">        &#125;</span><br><span class="line">        .nav li&#123;</span><br><span class="line">            display:inline-block;</span><br><span class="line">            list-style:none;</span><br><span class="line">        &#125;</span><br><span class="line">        .nav li a&#123;</span><br><span class="line">            display:inline-block;</span><br><span class="line">            text-decoration: none;</span><br><span class="line">            padding:10px 15px;</span><br><span class="line">        &#125;</span><br><span class="line">        .router&#123;</span><br><span class="line">            padding:20px;</span><br><span class="line">        &#125;</span><br><span class="line">        a&#123;</span><br><span class="line">            cursor: pointer;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    </span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;section class=&quot;warp&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;nav&quot;&gt;          </span><br><span class="line">            &lt;ul&gt;</span><br><span class="line">                &lt;li&gt;&lt;a href=&quot;javascript:void(0)&quot; data-path=&quot;index&quot;&gt;首页&lt;/a&gt;&lt;/li&gt; </span><br><span class="line">                &lt;li&gt;&lt;a href=&quot;javascript:void(0)&quot; data-path=&quot;news&quot;&gt;新闻&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">                &lt;li&gt;&lt;a href=&quot;javascript:void(0)&quot; data-path=&quot;about&quot;&gt;关于&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;div id=&quot;router&quot; class=&quot;router&quot;&gt;</span><br><span class="line">            &lt;!-- 内容加载区域 --&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/section&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;script src=&quot;https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;./router.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="一：简单开胃菜"><a href="#一：简单开胃菜" class="headerlink" title="一：简单开胃菜"></a>一：简单开胃菜</h5><p><code>router.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;(function()&#123;  	</span><br><span class="line">  	history.replaceState(null,null,&apos;&apos;);//最开始的状态，采用replace直接替换</span><br><span class="line">    $(&apos;#router&apos;).html(&apos;&lt;p&gt;nav1&lt;/p&gt;&apos;)</span><br><span class="line">	$(&apos;a&apos;).on(&apos;click&apos;,function()&#123;</span><br><span class="line">		console.log(this.text)</span><br><span class="line">		var text = this.text;</span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ text +&apos;&lt;/p&gt;&apos;)</span><br><span class="line">		history.pushState(null,null,&apos;#/&apos;+text);</span><br><span class="line">	&#125;)    </span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/06/07/前端路由实现-history/1.gif" alt="简单示例"></p>
+<p>最简单的示例，只能监听点击事件,而浏览器中的后、前进都不能监听地址栏的改变</p>
+<h5 id="二、数据状态管理"><a href="#二、数据状态管理" class="headerlink" title="二、数据状态管理"></a>二、数据状态管理</h5><p><code>router.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">状态版</span><br><span class="line">;(function()&#123;  	</span><br><span class="line">  	var count = [0,0,0]</span><br><span class="line">  	$(&apos;#router&apos;).html(&apos;&lt;p&gt;导航1：&lt;/p&gt;&apos;+count[0]+&apos;&lt;p&gt;导航2：&lt;/p&gt;&apos;+count[1]+&apos;&lt;p&gt;导航3：&lt;/p&gt;&apos;+count[2])</span><br><span class="line">  	history.replaceState(count,null,&apos;&apos;);//最开始的状态，采用replace直接替换</span><br><span class="line">    </span><br><span class="line">    for(var i = 0 ; i&lt;$(&apos;a&apos;).length; i++)&#123;</span><br><span class="line">    	$(&apos;a&apos;)[i].index = i</span><br><span class="line">    	$(&apos;a&apos;).eq(i).on(&apos;click&apos;,function()&#123;</span><br><span class="line">    		console.log(this.index);</span><br><span class="line">    		var index = this.index;</span><br><span class="line">    		count[index]++;</span><br><span class="line">    		$(&apos;#router&apos;).html(&apos;&lt;p&gt;导航1：&lt;/p&gt;&apos;+count[0]+&apos;&lt;p&gt;导航2：&lt;/p&gt;&apos;+count[1]+&apos;&lt;p&gt;导航3：&lt;/p&gt;&apos;+count[2])</span><br><span class="line">    		history.pushState(count,null,&apos;#/count&apos;+count[index]);//之后的状态，需要进行保存</span><br><span class="line">    	&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    	</span><br><span class="line">    </span><br><span class="line">    //监听history其他api导致地址栏url改变事件</span><br><span class="line">    window.addEventListener(&apos;popstate&apos;,function(e)&#123;</span><br><span class="line">	    console.log(e.state);</span><br><span class="line">	    var state = e.state;</span><br><span class="line">	    $(&apos;#router&apos;).html(&apos;&lt;p&gt;导航1：&lt;/p&gt;&apos;+state[0]+&apos;&lt;p&gt;导航2：&lt;/p&gt;&apos;+state[1]+&apos;&lt;p&gt;导航3：&lt;/p&gt;&apos;+state[2])</span><br><span class="line">	    </span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/06/07/前端路由实现-history/2.gif" alt="数据状态管理"></p>
+<p><code>popstate</code></p>
+<blockquote>
+<p>当活动历史记录条目更改时，将触发popstate事件。如果被激活的历史记录条目是通过对history.pushState（）的调用创建的，或者受到对history.replaceState（）的调用的影响，popstate事件的state属性包含历史条目的状态对象的副本。</p>
+</blockquote>
+<blockquote>
+<p>需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。只有在做出浏览器动作时，才会触发该事件，如用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back()）</p>
+</blockquote>
+<h5 id="三：回归简单"><a href="#三：回归简单" class="headerlink" title="三：回归简单"></a>三：回归简单</h5><p><code>router.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;(function()&#123;  	</span><br><span class="line">  	</span><br><span class="line">  	var url = &apos;nav1&apos;;</span><br><span class="line"></span><br><span class="line">  	history.replaceState(url,null,&apos;&apos;);//最开始的状态，采用replace直接替换</span><br><span class="line">    $(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+url+&apos;&lt;/p&gt;&apos;)</span><br><span class="line"></span><br><span class="line">	$(&apos;a&apos;).on(&apos;click&apos;,function()&#123;</span><br><span class="line">		console.log(this.text)</span><br><span class="line">		url = this.text;</span><br><span class="line"></span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ url +&apos;&lt;/p&gt;&apos;)</span><br><span class="line">		history.pushState(url,null,&apos;#/&apos;+url);</span><br><span class="line">	&#125;)</span><br><span class="line">	window.addEventListener(&apos;popstate&apos;,function(e)&#123;</span><br><span class="line">	    console.log(e.state);</span><br><span class="line">	    url = e.state</span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ url +&apos;&lt;/p&gt;&apos;)</span><br><span class="line">	    </span><br><span class="line">	 &#125;);     </span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/06/07/前端路由实现-history/3.gif" alt="回归简单"></p>
+<p>兜兜转转我们算是回到了起点，但是通过这张图我们会发现页面点击刷新按钮会有导航和内容块不一致的内容，所以我们需要改进他，并且监听<code>load</code>事件</p>
+<p>改进</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">;(function()&#123;  	</span><br><span class="line">  	</span><br><span class="line">	$(&apos;a&apos;).on(&apos;click&apos;,function()&#123;</span><br><span class="line">		console.log(this.text)</span><br><span class="line">		url = this.text;</span><br><span class="line"></span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ url +&apos;&lt;/p&gt;&apos;)</span><br><span class="line">		history.pushState(url,null,&apos;#/&apos;+url);</span><br><span class="line">	&#125;)</span><br><span class="line">	window.addEventListener(&apos;popstate&apos;,function(e)&#123;</span><br><span class="line">	    console.log(e.state);</span><br><span class="line">	    url = e.state</span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ url +&apos;&lt;/p&gt;&apos;)</span><br><span class="line">	    </span><br><span class="line">	 &#125;);</span><br><span class="line">	window.addEventListener(&apos;load&apos;,function()&#123;</span><br><span class="line">		url = location.hash.slice(2) || &apos;nav1&apos;;</span><br><span class="line">		history.replaceState(url,null,&apos;&apos;);</span><br><span class="line">		console.log(location.hash);</span><br><span class="line">		$(&apos;#router&apos;).html(&apos;&lt;p&gt;&apos;+ url +&apos;&lt;/p&gt;&apos;);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">      </span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/06/07/前端路由实现-history/4.gif" alt="简单回归完整"></p>
+<p>可以看到我们点击刷新的时候导航和内容区域一致了。</p>
+<h5 id="四：路由页面引进"><a href="#四：路由页面引进" class="headerlink" title="四：路由页面引进"></a>四：路由页面引进</h5><p>我们这里还是采用了<code>ajax</code>的<code>load</code>方法</p>
+<p><code>router.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">;(function()&#123; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	var router = [</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;index&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./main.html&apos;</span><br><span class="line">  		&#125;,</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;news&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./news.html&apos;</span><br><span class="line">  		&#125;,</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;about&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./about.html&apos;</span><br><span class="line">  		&#125;</span><br><span class="line">  	];</span><br><span class="line"></span><br><span class="line">  	//改变页面</span><br><span class="line">  	function display_page(url)&#123;</span><br><span class="line">  		$(&apos;#router&apos;).load(url)</span><br><span class="line">  	&#125;</span><br><span class="line"></span><br><span class="line">	$(&apos;a&apos;).on(&apos;click&apos;,function()&#123;</span><br><span class="line">		var path = $(this).data(&apos;path&apos;);</span><br><span class="line">		console.log(path)</span><br><span class="line">		for(var i in router)&#123;</span><br><span class="line">			if(router[i].path == path)&#123;</span><br><span class="line">				display_page(router[i].url);</span><br><span class="line">				history.pushState(router[i].url,null,router[i].path);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">	window.addEventListener(&apos;popstate&apos;,function(e)&#123;</span><br><span class="line">		var url = e.state;</span><br><span class="line">	    display_page(url);</span><br><span class="line">	    </span><br><span class="line">	&#125;);</span><br><span class="line">	window.addEventListener(&apos;load&apos;,function()&#123;</span><br><span class="line">		var start = location.href.lastIndexOf(&apos;/&apos;);</span><br><span class="line"></span><br><span class="line">		var path = location.hash.slice(start) || &apos;index&apos;;</span><br><span class="line">		console.log(path)</span><br><span class="line"></span><br><span class="line">		for(var i in router)&#123;//刷新 加载</span><br><span class="line">			console.log(1)</span><br><span class="line">			if(router[i].path == path)&#123;</span><br><span class="line">				display_page(router[i].url);	</span><br><span class="line">				history.replaceState(router[i].url,null,path);		</span><br><span class="line">				break;	</span><br><span class="line">			&#125;</span><br><span class="line">			if(i == router.length-1)&#123;//重定向</span><br><span class="line">				display_page(router[0].url);	</span><br><span class="line">				history.replaceState(router[i].url,null,router[0].path);	</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;						</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/06/07/前端路由实现-history/5.gif" alt="更符合history"></p>
+<p>可以看到基本是实现了<code>history</code>路由功能，但是这里有一个问题就是刷新后因为地址栏url原因会报错，也就是找不到这个页面，这是由于刷新的时候是重载，重新向网站目录查找文件，而我们当前目录并没有这个文件资源所以导致报错。<strong>需要后台拦截！</strong> 放弃！ </p>
+<p>折中</p>
+<p>最后我还是屈服于<code>#</code>了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">;(function()&#123;  	</span><br><span class="line">  	</span><br><span class="line">  	var router = [</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;index&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./main.html&apos;</span><br><span class="line">  		&#125;,</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;news&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./news.html&apos;</span><br><span class="line">  		&#125;,</span><br><span class="line">  		&#123;</span><br><span class="line">	  		&apos;path&apos;:&apos;about&apos;,</span><br><span class="line">	  		&apos;url&apos;:&apos;./about.html&apos;</span><br><span class="line">  		&#125;</span><br><span class="line">  	];</span><br><span class="line"></span><br><span class="line">  	//改变页面</span><br><span class="line">  	function display_page(url)&#123;</span><br><span class="line">  		$(&apos;#router&apos;).load(url)</span><br><span class="line">  	&#125;</span><br><span class="line"></span><br><span class="line">	$(&apos;a&apos;).on(&apos;click&apos;,function()&#123;</span><br><span class="line">		var path = $(this).data(&apos;path&apos;);</span><br><span class="line">		console.log(path)</span><br><span class="line">		for(var i in router)&#123;</span><br><span class="line">			if(router[i].path == path)&#123;</span><br><span class="line">				display_page(router[i].url);</span><br><span class="line">				history.pushState(router[i].url,null,&apos;#/&apos;+router[i].path);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">	window.addEventListener(&apos;popstate&apos;,function(e)&#123;</span><br><span class="line">		var url = e.state;</span><br><span class="line">	    display_page(url);</span><br><span class="line">	    </span><br><span class="line">	&#125;);</span><br><span class="line">	window.addEventListener(&apos;load&apos;,function()&#123;</span><br><span class="line">		var path = location.hash.slice(2) || &apos;/index&apos;;</span><br><span class="line">		console.log(path)</span><br><span class="line">		for(var i in router)&#123;//刷新 加载</span><br><span class="line">			console.log(1)</span><br><span class="line">			if(router[i].path == path)&#123;</span><br><span class="line">				display_page(router[i].url);	</span><br><span class="line">				history.replaceState(router[i].url,null,&apos;#/&apos; + path);		</span><br><span class="line">				break;	</span><br><span class="line">			&#125;</span><br><span class="line">			if(i == router.length-1)&#123;//重定向</span><br><span class="line">				display_page(router[0].url);	</span><br><span class="line">				history.replaceState(router[0].url,null,&apos;#/&apos; + router[0].path);	</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;						</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2018/06/07/前端路由实现-history/6.gif" alt="勉强的很"></p>
+<p>勉强的很呀</p>
+<p>代码：<a href="https://github.com/jx915/wheels/tree/master/router(history)" title="router(history)" target="_blank" rel="noopener"> router(history)</a><br>演示： <a href="https://jx915.github.io/wheels/router(history)/" title="演示地址" target="_blank" rel="noopener"> 演示地址</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/06/前端路由实现-hash/" rel="next" title="前端路由实现-hash">
+                <i class="fa fa-chevron-left"></i> 前端路由实现-hash
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjg3OS8xMzQxNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="天空影" />
+            
+              <p class="site-author-name" itemprop="name">天空影</p>
+              <p class="site-description motion-element" itemprop="description">生活继续</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/jx915" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/jx950915" target="_blank" title="CSDN"><i class="fa fa-fw fa-globe"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#了解"><span class="nav-number">1.</span> <span class="nav-text">了解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尝试"><span class="nav-number">2.</span> <span class="nav-text">尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一：简单开胃菜"><span class="nav-number">2.1.</span> <span class="nav-text">一：简单开胃菜</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、数据状态管理"><span class="nav-number">2.2.</span> <span class="nav-text">二、数据状态管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三：回归简单"><span class="nav-number">2.3.</span> <span class="nav-text">三：回归简单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四：路由页面引进"><span class="nav-number">2.4.</span> <span class="nav-text">四：路由页面引进</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">天空影</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("qolpHqDRql4CmMa1TxNoEnpC-gzGzoHsz", "SWCMS1hkOnFXmvbIBjBTbYX7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var newcounter = new Counter();
+              /* Set ACL */
+              var acl = new AV.ACL();
+              acl.setPublicReadAccess(true);
+              acl.setPublicWriteAccess(true);
+              newcounter.setACL(acl);
+              /* End Set ACL */
+              newcounter.set("title", title);
+              newcounter.set("url", url);
+              newcounter.set("time", 1);
+              newcounter.save(null, {
+                success: function(newcounter) {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                },
+                error: function(newcounter, error) {
+                  console.log('Failed to create');
+                }
+              });
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
