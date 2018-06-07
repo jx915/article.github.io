@@ -175,3 +175,6 @@ Router.route('/about',function(){
 
 
 这次只是做了一下`hash`的，最新的`history API`还不是很懂，等明白了再做一个`history`版的，这样就不用看到不怎么友好的`#`了！
+
+代码：<a href="https://github.com/jx915/wheels/tree/master/router(hash)" title = "router(hash)"> router(hash)</a>
+演示： <a href="https://jx915.github.io/wheels/router(hash)/" title = "演示地址"> 演示地址</a>
