@@ -1856,7 +1856,7 @@ img:hover {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #7cdeff;
+  background: #ab95de;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3041,4 +3041,13 @@ pre {
 .header {
   width: 1060px;
   margin: 10px auto;
+}
+blockquote {
+  background: #eef0f4;
+  padding: 10px 15px;
+  border-left-color: #14daef;
+}
+blockquote p {
+  margin-bottom: 0;
+  color: #999;
 }
